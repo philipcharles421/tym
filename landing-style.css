@@ -145,22 +145,13 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    color: white;
-    font-size: 1.5rem;
     text-decoration: none;
 }
 
-.logo-icon {
-    font-size: 1.8rem;
-}
-
-.logo-text {
-    background: linear-gradient(135deg, #667eea, #f093fb);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.logo-image {
+    display: block;
+    width: auto;
+    height: 42px;
 }
 
 .nav-links {
@@ -274,8 +265,8 @@ body {
         display: none;
     }
 
-    .logo-text {
-        display: inline;
+    .logo-image {
+        height: 38px;
     }
 
     .mobile-menu.open {
@@ -886,13 +877,8 @@ body {
 }
 
 @media (max-width: 480px) {
-    .logo {
-        font-size: 1.2rem;
-        gap: 8px;
-    }
-
-    .logo-icon {
-        font-size: 1.4rem;
+    .logo-image {
+        height: 34px;
     }
 
     .menu-toggle {
@@ -1042,8 +1028,8 @@ body {
         gap: 8px;
     }
 
-    .logo-text {
-        font-size: 1rem;
+    .logo-image {
+        height: 32px;
     }
 
     .hero .container {

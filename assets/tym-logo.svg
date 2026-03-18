@@ -1,0 +1,15 @@
+<svg width="756" height="378" viewBox="0 0 756 378" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TYM logo">
+  <defs>
+    <linearGradient id="tymGradient" x1="48" y1="189" x2="708" y2="189" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1FB0FF"/>
+      <stop offset="1" stop-color="#D300FF"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M48 189C48 109.471 112.471 45 192 45C235.455 45 274.413 64.3824 300.81 94.9961L370.047 175.289L450.31 83.9922C476.979 53.6523 515.892 34.5 559.277 34.5C639.083 34.5 703.777 99.1934 703.777 179C703.777 258.807 639.083 323.5 559.277 323.5C516.403 323.5 477.889 304.797 451.257 275.121L370.529 185.004L289.328 276.996C262.696 307.156 224.01 326 181.5 326C106.112 326 45 264.888 45 189" stroke="url(#tymGradient)" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M88 135H226" stroke="#1E93FF" stroke-width="29" stroke-linecap="round"/>
+  <path d="M157 135V242" stroke="#1E93FF" stroke-width="29" stroke-linecap="round"/>
+
+  <path d="M503 240V128L560 206L618 128V240" stroke="#B336FF" stroke-width="29" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
