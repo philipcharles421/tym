@@ -821,3 +821,20 @@ body {
         margin-bottom: 14px;
     }
 }
+
+@media (max-width: 480px) and (orientation: portrait) {
+    .password-input {
+        padding-right: 68px;
+    }
+
+    .password-input-wrapper .input-icon {
+        right: 32px;
+        font-size: 0.95rem;
+    }
+
+    .toggle-password {
+        right: 6px;
+        font-size: 0.95rem;
+        padding: 4px;
+    }
+}
