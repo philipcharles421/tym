@@ -186,6 +186,52 @@ body{
     .modal-panel{max-height:calc(100vh - 20px);overflow-y:auto}
 }
 
+@media (max-width:390px) and (max-height:844px){
+    .main-container{margin:72px auto 8px;padding:8px}
+    .page-title{font-size:1.05rem}
+    .capture-text{font-size:14px}
+}
+
+@media (min-width:768px) and (max-width:1024px){
+    .main-container{max-width:920px;padding:18px}
+    .messages-container{padding:0}
+    .capture-area{width:340px;height:604px}
+}
+
+@media (min-width:1440px){
+    .main-container{max-width:1280px}
+    .messages-container{max-width:980px;margin:0 auto}
+}
+
+@media (max-width:375px) and (max-height:667px){
+    .main-container{margin:68px auto 6px;padding:6px}
+    .page-title{font-size:1rem;margin-bottom:10px}
+    .message-card{padding:9px}
+    .capture-area{max-width:260px}
+}
+
+@media (min-width:768px) and (max-width:834px) and (orientation:portrait){
+    .main-container{max-width:760px;padding:16px}
+    .page-title{font-size:1.9rem}
+    .modal-panel{max-width:760px}
+}
+
+@media (min-width:1900px) and (min-height:1000px){
+    .main-container{max-width:1380px}
+    .messages-container{max-width:1060px}
+    .page-title{font-size:2rem}
+}
+
+@media (max-height:500px) and (orientation:landscape){
+    .navbar{padding:8px 10px}
+    .main-container{margin:58px auto 8px;padding:8px}
+    .page-title{font-size:1.05rem;margin-bottom:10px}
+    .message-card{padding:10px}
+    .modal{align-items:flex-start;padding-top:6px;padding-bottom:6px}
+    .modal-panel{max-height:calc(100vh - 12px);overflow-y:auto}
+    .capture-area{max-width:250px;height:auto;aspect-ratio:9/16}
+}
+
 /* Extra small devices (< 400px) */
 @media (max-width:400px){
     .navbar{padding:8px 10px}

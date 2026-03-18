@@ -1391,3 +1391,141 @@ body {
         padding-top: 76px;
     }
 }
+
+/* Device preset tuning */
+@media (max-width: 390px) and (max-height: 844px) {
+    .hero-title {
+        font-size: 1.25rem;
+        margin-bottom: 20px;
+    }
+
+    .action-card {
+        padding: 18px 12px;
+    }
+
+    .share-section {
+        padding: 24px 12px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .main-container {
+        max-width: 960px;
+    }
+
+    .action-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .share-buttons-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1440px) {
+    .nav-container,
+    .main-container,
+    .container {
+        max-width: 1320px;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+    }
+
+    .action-card {
+        padding: 44px 34px;
+    }
+
+    .share-section {
+        padding: 56px 48px;
+    }
+}
+
+/* Final viewport polish */
+@media (max-width: 375px) and (max-height: 667px) {
+    .main-container {
+        padding: 70px 8px 24px;
+    }
+
+    .hero-title {
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+    }
+
+    .action-card {
+        padding: 14px 10px;
+    }
+
+    .share-section {
+        padding: 18px 10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
+    .main-container {
+        padding: 90px 18px 38px;
+    }
+
+    .hero-title {
+        font-size: 2.15rem;
+    }
+
+    .share-buttons-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .share-button {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 1900px) and (min-height: 1000px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .action-cards {
+        gap: 36px;
+    }
+
+    .share-buttons-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .navbar {
+        padding: 8px 0;
+    }
+
+    .main-container {
+        padding-top: 62px;
+        padding-bottom: 16px;
+    }
+
+    .hero-title {
+        font-size: 1.35rem;
+        margin-bottom: 14px;
+    }
+
+    .action-cards {
+        gap: 12px;
+    }
+
+    .action-card {
+        padding: 16px 12px;
+    }
+
+    .share-section {
+        padding: 20px 14px;
+    }
+
+    .avatar-modal-panel,
+    .password-modal-panel {
+        max-height: calc(100vh - 14px);
+        overflow-y: auto;
+    }
+}

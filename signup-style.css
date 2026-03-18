@@ -768,3 +768,78 @@ body {
         width: 100%;
     }
 }
+
+@media (max-width: 390px) and (max-height: 844px) {
+    .signup-card {
+        padding: 24px 16px;
+    }
+
+    .signup-title {
+        font-size: 1.35rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .signup-card {
+        max-width: 540px;
+        padding: 44px 36px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .signup-card {
+        max-width: 540px;
+    }
+
+    .signup-title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 375px) and (max-height: 667px) {
+    .container {
+        padding-top: 58px;
+    }
+
+    .signup-card {
+        padding: 18px 14px;
+    }
+
+    .signup-header {
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
+    .signup-card {
+        max-width: 600px;
+    }
+}
+
+@media (min-width: 1900px) and (min-height: 1000px) {
+    .signup-card {
+        max-width: 580px;
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .container {
+        justify-content: flex-start;
+        padding-top: 54px;
+        padding-bottom: 12px;
+    }
+
+    .back-button {
+        top: 10px;
+        left: 10px;
+    }
+
+    .signup-card {
+        max-width: 640px;
+        padding: 16px 14px;
+    }
+
+    .signup-header {
+        margin-bottom: 14px;
+    }
+}
