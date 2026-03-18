@@ -721,3 +721,28 @@ body {
         padding: 11px 14px;
     }
 }
+
+@media (max-height: 760px) {
+    .container {
+        justify-content: flex-start;
+        padding-top: 70px;
+        padding-bottom: 20px;
+    }
+
+    .back-button {
+        position: fixed;
+        top: 14px;
+        left: 14px;
+        z-index: 5;
+    }
+}
+
+@media (max-width: 340px) {
+    .login-card {
+        padding: 20px 14px;
+    }
+
+    .btn-submit {
+        width: 100%;
+    }
+}

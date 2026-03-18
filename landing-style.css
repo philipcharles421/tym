@@ -1032,3 +1032,39 @@ body {
         font-size: 1.35rem;
     }
 }
+
+@media (max-width: 640px) {
+    .container {
+        padding: 0 14px;
+    }
+
+    .nav-container {
+        gap: 8px;
+    }
+
+    .logo-text {
+        font-size: 1rem;
+    }
+
+    .hero .container {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 340px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .btn-lg {
+        max-width: 100%;
+    }
+}
+
+@media (max-height: 700px) {
+    .hero {
+        min-height: auto;
+        padding-top: 88px;
+        padding-bottom: 32px;
+    }
+}

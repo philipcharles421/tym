@@ -13,6 +13,7 @@ body{
     color:#fff;
     background:linear-gradient(180deg,var(--bg-1),var(--bg-2));
     min-height:100vh;
+    overflow-x:hidden;
 }
 .background{position:fixed;inset:0;z-index:-1}
 .gradient-bg{position:absolute;inset:0;background:linear-gradient(135deg,#3b0f6f 0%,#1f1140 50%,#0f0b1a 100%);opacity:0.9}
@@ -173,6 +174,16 @@ body{
     .zero-state p{font-size:0.9rem}
     
     .toast{bottom:20px;padding:8px 12px;font-size:0.85rem}
+}
+
+@media (max-width:420px){
+    .modal-panel{width:calc(100% - 12px);padding:10px;border-radius:10px}
+    .capture-area{max-width:100%;height:auto;aspect-ratio:9/16}
+    .capture-text{font-size:15px}
+}
+
+@media (max-height:720px){
+    .modal-panel{max-height:calc(100vh - 20px);overflow-y:auto}
 }
 
 /* Extra small devices (< 400px) */

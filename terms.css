@@ -26,6 +26,7 @@ body {
     background: linear-gradient(180deg, var(--bg-1), var(--bg-2));
     color: var(--text-main);
     line-height: 1.8;
+    overflow-x: hidden;
 }
 
 .background {
@@ -253,5 +254,20 @@ a:hover {
     .footer-content {
         justify-content: center;
         text-align: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .terms-main {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .terms-container {
+        padding: 16px 12px;
+    }
+
+    .terms-header h1 {
+        font-size: 1.45rem;
     }
 }

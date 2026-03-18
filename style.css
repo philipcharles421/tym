@@ -666,3 +666,23 @@ body {
         padding: 11px 12px;
     }
 }
+
+/* Additional responsive hardening */
+@media (max-height: 700px) {
+    .container {
+        justify-content: flex-start;
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .header {
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .success-content {
+        width: 92vw;
+        padding: 24px 16px;
+    }
+}

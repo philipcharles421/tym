@@ -1341,6 +1341,8 @@ body {
     .password-modal-panel {
         padding: 20px;
         width: 95%;
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
     }
 
     .password-modal-title {
@@ -1358,5 +1360,34 @@ body {
     .form-input {
         padding: 12px 40px 12px 14px;
         font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+@media (max-width: 420px) {
+    .share-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .share-button {
+        max-width: 100%;
+    }
+
+    .avatar-modal-panel,
+    .password-modal-panel {
+        width: calc(100% - 16px);
+        padding: 16px;
+        border-radius: 14px;
+        max-height: calc(100vh - 16px);
+        overflow-y: auto;
+    }
+
+    .avatar-crop-container {
+        height: 260px;
+    }
+}
+
+@media (max-height: 720px) {
+    .main-container {
+        padding-top: 76px;
     }
 }
