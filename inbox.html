@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Inbox - TYM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="inbox.css">
+</head>
+<body>
+    <div class="background">
+        <div class="gradient-bg"></div>
+        <div class="blur-blob blob1"></div>
+        <div class="blur-blob blob2"></div>
+    </div>
+
+    <!-- Navbar (same structure as dashboard) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">💬</span>
+                <span class="logo-text">TYM</span>
+            </div>
+
+            <div class="profile-section">
+                <button class="profile-trigger" id="profileTrigger">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User Avatar" class="avatar-image">
+                    <span class="user-name" id="userName">User</span>
+                    <span class="chevron-icon">▼</span>
+                </button>
+
+                <div class="profile-dropdown hidden" id="profileDropdown">
+                    <button class="dropdown-item" id="logoutBtn">🚪 Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <section class="messages-section">
+            <h1 class="page-title">Inbox</h1>
+
+            <div id="messagesContainer" class="messages-container">
+                <!-- Messages are rendered here -->
+            </div>
+
+            <div id="zeroState" class="zero-state hidden">
+                <div class="zero-graphic">📭</div>
+                <h3>Waiting for messages...</h3>
+                <p>Share your link so people can send anonymous photos and messages.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-backdrop" id="modalBackdrop"></div>
+        <div class="modal-panel">
+            <button class="modal-close" id="modalClose">✕</button>
+
+            <div class="modal-content">
+                <h2>Share Response</h2>
+
+                <div class="preview-wrapper">
+                    <div class="capture-area" id="captureArea">
+                        <div class="capture-content">
+                            <div class="capture-top"></div>
+                            <div class="capture-body">
+                                <p id="captureText" class="capture-text"></p>
+                                <img id="captureImage" class="capture-image hidden" alt="Attached" crossorigin="anonymous">
+                            </div>
+                            <div class="capture-footer">TYM</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="downloadBtn" class="btn primary">Download Image</button>
+                    <button id="shareBtn" class="btn secondary">Share to Apps</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- html2canvas CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="module" src="./inbox.js?v=1.0.1"></script>
+</body>
+</html>

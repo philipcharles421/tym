@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYM - Talk Your Mind | Anonymous Photos & Messages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="landing-style.css">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background">
+        <div class="gradient-bg"></div>
+        <div class="blur-blob blob1"></div>
+        <div class="blur-blob blob2"></div>
+        <div class="blur-blob blob3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">💬</span>
+                <span class="logo-text">TYM</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#footer">Contact</a></li>
+            </ul>
+            <a href="./login.html" class="nav-signin">Sign In</a>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#footer">Contact</a>
+            <a href="./signup.html">Claim Your Link</a>
+            <a href="./login.html">Login</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-headline">Receive anonymous photos and texts.</h1>
+                <p class="hero-subheadline">The only anonymous app that lets your friends send you actual pictures. See what they're really doing.</p>
+                <button class="btn-primary btn-lg" onclick="window.location.href='./signup.html'">
+                    Get Started
+                    <span class="btn-icon">→</span>
+                </button>
+                <p class="hero-cta-text">No sign-in required to send</p>
+            </div>
+
+            <!-- Message Card Mockup -->
+            <div class="hero-visual">
+                <div class="message-card-mockup">
+                    <div class="mockup-avatar"></div>
+                    <div class="mockup-content">
+                        <p class="mockup-text">"You're lowkey the funniest person I know 😂"</p>
+                        <div class="mockup-image">
+                            <div class="image-blur"></div>
+                            <span class="image-label">📸 Photo</span>
+                        </div>
+                    </div>
+                    <div class="mockup-shine"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why TYM?</h2>
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">📸</div>
+                    <h3 class="feature-title">Photo Replies</h3>
+                    <p class="feature-description">Don't just read it. See it. Your friends can send photos directly in messages.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">100% Private</h3>
+                    <p class="feature-description">We never reveal your identity. Complete anonymity for senders and receivers.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">Instant Sharing</h3>
+                    <p class="feature-description">Share your best messages to your Story in one click. Go viral.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <!-- Step 1 -->
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Create Your Link</h3>
+                    <p class="step-description">Sign up in seconds. Get your unique AnonPic link instantly.</p>
+                </div>
+
+                <!-- Arrow -->
+                <div class="step-arrow">→</div>
+
+                <!-- Step 2 -->
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Share on Your Story</h3>
+                    <p class="step-description">Post your link on TikTok, Insta, Snapchat, or anywhere.</p>
+                </div>
+
+                <!-- Arrow -->
+                <div class="step-arrow">→</div>
+
+                <!-- Step 3 -->
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Get Photos & Secrets</h3>
+                    <p class="step-description">Receive anonymous messages and photos from your friends.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-headline">Curious what people want to tell you?</h2>
+            <button class="btn-primary btn-lg btn-glow" onclick="window.location.href='./signup.html'">
+                Create Your Link Now
+                <span class="btn-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-brand">© 2026 TYM (Talk Your Mind). All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="./terms.html" class="footer-link">Terms of Service</a>
+                    <a href="./privacy.html" class="footer-link">Privacy Policy</a>
+                    <a href="mailto:contact@anonpic.com" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="landing.js"></script>
+</body>
+</html>

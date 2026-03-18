@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TYM - Talk Your Mind | Anonymous Messages + Photos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background">
+        <div class="gradient-bg"></div>
+        <div class="blur-shapes shape1"></div>
+        <div class="blur-shapes shape2"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">TYM</h1>
+            <p class="subtitle">Talk Your Mind - Send anonymous messages with photos 📸</p>
+        </header>
+
+        <!-- Hero Section - Message Card -->
+        <div class="card">
+            <!-- User Profile Section -->
+            <div class="profile-section">
+                <div class="avatar-placeholder">
+                    <img id="recipientAvatar" class="recipient-avatar" src="" alt="Recipient avatar">
+                    <span id="recipientAvatarFallback" class="avatar-fallback">👤</span>
+                </div>
+                <div class="profile-info">
+                    <h2 class="username">@AnonymousUser</h2>
+                    <p class="status">Waiting for your message...</p>
+                </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="input-group">
+                <textarea 
+                    id="messageInput" 
+                    class="message-textarea" 
+                    placeholder="Type your anonymous message here... Be nice! 💬"
+                    maxlength="500"
+                ></textarea>
+                <div class="char-count">
+                    <span id="charCount">0</span>/500
+                </div>
+            </div>
+
+            <!-- Image Upload Section -->
+            <div class="image-upload-section">
+                <input 
+                    type="file" 
+                    id="imageInput" 
+                    class="file-input" 
+                    accept="image/*"
+                    style="display: none;"
+                >
+                <button class="btn-add-image" id="addImageBtn">
+                    <span class="icon">📸</span> Add Image
+                </button>
+                
+                <!-- Image Preview -->
+                <div id="imagePreview" class="image-preview hidden">
+                    <div class="preview-content">
+                        <img id="previewImg" src="" alt="Preview">
+                        <button class="btn-remove-image" id="removeImageBtn">✕</button>
+                    </div>
+                    <p class="file-name" id="fileName"></p>
+                </div>
+            </div>
+
+            <!-- Send Button -->
+            <button class="btn-send" id="sendBtn">
+                <span>Send Message</span>
+                <span class="arrow">→</span>
+            </button>
+        </div>
+
+        <!-- Get Your Own Link -->
+        <div class="get-own-section">
+            <button class="btn-get-link" onclick="window.location.href='./signup.html'">
+                👇 Get your own link
+            </button>
+            <p class="get-own-text">Let your friends send you anonymous messages!</p>
+        </div>
+
+        <!-- Success Animation -->
+        <div id="successMessage" class="success-message hidden">
+            <div class="success-content">
+                <h2>Message Sent!</h2>
+                <p>Your anonymous message has been submitted.</p>
+                <button class="btn-ok" onclick="closeSuccess()">Awesome!</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
