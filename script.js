@@ -1,5 +1,4 @@
 import { supabase } from './utils.js';
-import browserImageCompression from 'https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/+esm';
 
 const messageInput = document.getElementById('messageInput');
 const addImageBtn = document.getElementById('addImageBtn');
@@ -8,8 +7,6 @@ const imagePreview = document.getElementById('imagePreview');
 const previewImg = document.getElementById('previewImg');
 const removeImageBtn = document.getElementById('removeImageBtn');
 const sendBtn = document.getElementById('sendBtn');
-const sendBtnLabel = sendBtn.querySelector('span');
-const sendBtnArrow = sendBtn.querySelector('.arrow');
 const charCount = document.getElementById('charCount');
 const fileName = document.getElementById('fileName');
 const successMessage = document.getElementById('successMessage');
@@ -155,33 +152,20 @@ async function handleSendMessage() {
         return;
     }
 
-    setSendLoadingState(true, 'Sending...');
+    sendBtn.disabled = true;
 
     let imageUrl = null;
 
     try {
         if (selectedFile) {
-            const compressionOptions = {
-                maxSizeMB: 0.4,
-                maxWidthOrHeight: 1024,
-                useWebWorker: true
-            };
-
-            const compressedFile = await browserImageCompression(selectedFile, compressionOptions);
-
-            const fileExtension = compressedFile.type?.split('/')[1] || 'jpg';
-            const uniqueFileName = `${Date.now()}.${fileExtension}`;
-
+            const uniqueFileName = `${Date.now()}-${selectedFile.name}`;
             console.log('Uploading image:', uniqueFileName);
-            console.log('Compressed file size:', compressedFile.size, 'bytes');
-            console.log('Compressed file type:', compressedFile.type);
+            console.log('File size:', selectedFile.size, 'bytes');
+            console.log('File type:', selectedFile.type);
 
-            const { error: uploadError } = await supabase.storage
+            const { data: uploadData, error: uploadError } = await supabase.storage
                 .from('message-images')
-                .upload(uniqueFileName, compressedFile, {
-                    contentType: compressedFile.type,
-                    upsert: false
-                });
+                .upload(uniqueFileName, selectedFile);
 
             if (uploadError) {
                 console.error('❌ Image upload error:', {
@@ -190,7 +174,7 @@ async function handleSendMessage() {
                     statusCode: uploadError.statusCode
                 });
                 alert(`Failed to upload image: ${uploadError.message}`);
-                setSendLoadingState(false);
+                sendBtn.disabled = false;
                 return;
             }
 
@@ -219,7 +203,7 @@ async function handleSendMessage() {
                 }
             ]);
 
-        setSendLoadingState(false);
+        sendBtn.disabled = false;
 
         if (error) {
             console.error('❌ Error sending message:', {
@@ -241,20 +225,7 @@ async function handleSendMessage() {
             stack: error.stack
         });
         alert(`An error occurred: ${error.message}`);
-        setSendLoadingState(false);
-    }
-}
-
-function setSendLoadingState(isLoading, label = 'Sending...') {
-    sendBtn.disabled = isLoading;
-    addImageBtn.disabled = isLoading;
-
-    if (sendBtnLabel) {
-        sendBtnLabel.textContent = isLoading ? label : 'Send Message';
-    }
-
-    if (sendBtnArrow) {
-        sendBtnArrow.style.opacity = isLoading ? '0.4' : '1';
+        sendBtn.disabled = false;
     }
 }
 
