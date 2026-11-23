@@ -12,22 +12,28 @@ const fileName = document.getElementById('fileName');
 const successMessage = document.getElementById('successMessage');
 const recipientAvatarElement = document.getElementById('recipientAvatar');
 const recipientAvatarFallbackElement = document.getElementById('recipientAvatarFallback');
+const toast = document.getElementById('toast');
 
 let selectedFile = null;
 let recipientProfile = null;
 let recipientDisplayName = 'AnonymousUser';
+
+function showToast(message, type = 'success') {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.className = 'toast';
+    if (type === 'error') toast.classList.add('error');
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3500);
+}
 
 function getDefaultAvatarUrl(username) {
     return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(username || 'user')}`;
 }
 
 function applyRecipientAvatar() {
-    if (!recipientAvatarElement || !recipientAvatarFallbackElement) {
-        return;
-    }
-
+    if (!recipientAvatarElement || !recipientAvatarFallbackElement) return;
     const avatarSrc = recipientProfile?.avatar_url || getDefaultAvatarUrl(recipientProfile?.username || recipientDisplayName);
-
     if (avatarSrc) {
         recipientAvatarElement.src = avatarSrc;
         recipientAvatarElement.classList.remove('hidden');
@@ -38,8 +44,23 @@ function applyRecipientAvatar() {
     }
 }
 
+function setPageLoading(isLoading) {
+    if (sendBtn) sendBtn.disabled = isLoading;
+    const usernameEl = document.querySelector('.username');
+    const statusEl = document.querySelector('.status');
+    const sendSpan = sendBtn?.querySelector('span:first-child');
+
+    if (isLoading) {
+        if (usernameEl) usernameEl.textContent = 'Loading...';
+        if (statusEl) statusEl.textContent = 'Please wait...';
+        if (sendSpan) sendSpan.textContent = 'Loading...';
+    } else {
+        if (sendSpan) sendSpan.textContent = 'Send Message →';
+    }
+}
+
 function redirectToLandingPage() {
-    window.location.href = './index.html';
+    window.location.href = './landing.html';
 }
 
 async function initializeRecipient() {
@@ -47,8 +68,11 @@ async function initializeRecipient() {
     const username = urlParams.get('to');
 
     if (!username) {
+        window.location.href = './landing.html';
         return;
     }
+
+    setPageLoading(true);
 
     const { data: profile, error } = await supabase
         .from('profiles')
@@ -56,25 +80,22 @@ async function initializeRecipient() {
         .eq('username', username)
         .single();
 
+    setPageLoading(false);
+
     if (error || !profile) {
-        alert('User not found');
-        redirectToLandingPage();
+        showToast('User not found.', 'error');
+        setTimeout(redirectToLandingPage, 2500);
         return;
     }
 
     recipientProfile = profile;
     recipientDisplayName = profile.display_name || profile.username || recipientDisplayName;
 
-    const usernameElement = document.querySelector('.username');
-    const statusElement = document.querySelector('.status');
+    const usernameEl = document.querySelector('.username');
+    const statusEl = document.querySelector('.status');
 
-    if (usernameElement) {
-        usernameElement.textContent = `@${recipientDisplayName}`;
-    }
-
-    if (statusElement && recipientDisplayName) {
-        statusElement.textContent = `Send an anonymous message to ${recipientDisplayName}`;
-    }
+    if (usernameEl) usernameEl.textContent = `@${recipientDisplayName}`;
+    if (statusEl) statusEl.textContent = `Send an anonymous message to ${recipientDisplayName}`;
 
     applyRecipientAvatar();
 }
@@ -82,26 +103,31 @@ async function initializeRecipient() {
 window.addEventListener('load', initializeRecipient);
 
 messageInput.addEventListener('input', () => {
-    charCount.textContent = messageInput.value.length;
+    const len = messageInput.value.length;
+    charCount.textContent = len;
+
+    const charCountDiv = charCount.parentElement;
+    charCountDiv.classList.remove('warn', 'danger');
+    if (len >= 480) {
+        charCountDiv.classList.add('danger');
+    } else if (len >= 400) {
+        charCountDiv.classList.add('warn');
+    }
 });
 
-addImageBtn.addEventListener('click', () => {
-    imageInput.click();
-});
+addImageBtn.addEventListener('click', () => imageInput.click());
 
 imageInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
-    if (!file) {
-        return;
-    }
+    if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-        alert('Please select a valid image file.');
+        showToast('Please select a valid image file.', 'error');
         return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-        alert('Image must be less than 5MB.');
+        showToast('Image must be less than 5MB.', 'error');
         return;
     }
 
@@ -135,103 +161,75 @@ async function handleSendMessage() {
     const message = messageInput.value.trim();
 
     if (!message) {
-        alert('Please write a message.');
+        showToast('Please write a message first.', 'error');
         messageInput.focus();
         return;
     }
 
     if (message.length < 3) {
-        alert('Message must be at least 3 characters long.');
+        showToast('Message must be at least 3 characters long.', 'error');
         messageInput.focus();
         return;
     }
 
     if (!recipientProfile?.id) {
-        alert('User not found');
-        redirectToLandingPage();
+        showToast('User not found. Please refresh the page.', 'error');
         return;
     }
 
     sendBtn.disabled = true;
+    const sendSpan = sendBtn.querySelector('span:first-child');
+    if (sendSpan) sendSpan.textContent = 'Sending...';
 
     let imageUrl = null;
 
     try {
         if (selectedFile) {
             const uniqueFileName = `${Date.now()}-${selectedFile.name}`;
-            console.log('Uploading image:', uniqueFileName);
-            console.log('File size:', selectedFile.size, 'bytes');
-            console.log('File type:', selectedFile.type);
 
-            const { data: uploadData, error: uploadError } = await supabase.storage
+            const { error: uploadError } = await supabase.storage
                 .from('message-images')
                 .upload(uniqueFileName, selectedFile);
 
             if (uploadError) {
-                console.error('❌ Image upload error:', {
-                    message: uploadError.message,
-                    status: uploadError.status,
-                    statusCode: uploadError.statusCode
-                });
-                alert(`Failed to upload image: ${uploadError.message}`);
+                showToast(`Failed to upload image: ${uploadError.message}`, 'error');
                 sendBtn.disabled = false;
+                if (sendSpan) sendSpan.textContent = 'Send Message';
                 return;
             }
 
-            console.log('✓ Image uploaded successfully');
-            
             const { data: urlData } = supabase.storage
                 .from('message-images')
                 .getPublicUrl(uniqueFileName);
-            
-            imageUrl = urlData?.publicUrl;
-            console.log('Image public URL:', imageUrl);
 
-            if (!imageUrl) {
-                console.error('Failed to get public URL for uploaded image');
-            }
+            imageUrl = urlData?.publicUrl || null;
         }
 
-        console.log('Inserting message with image_url:', imageUrl);
         const { error } = await supabase
             .from('messages')
-            .insert([
-                {
-                    recipient_id: recipientProfile.id,
-                    content: message,
-                    image_url: imageUrl
-                }
-            ]);
+            .insert([{ recipient_id: recipientProfile.id, content: message, image_url: imageUrl }]);
 
         sendBtn.disabled = false;
+        if (sendSpan) sendSpan.textContent = 'Send Message';
 
         if (error) {
-            console.error('❌ Error sending message:', {
-                message: error.message,
-                details: error.details,
-                hint: error.hint
-            });
-            alert(`Failed to send message: ${error.message}`);
+            showToast(`Failed to send message: ${error.message}`, 'error');
             return;
         }
 
-        console.log('✓ Message sent successfully');
         showSuccessAnimation();
         resetForm();
-    } catch (error) {
-        console.error('❌ Error processing message:', {
-            name: error.name,
-            message: error.message,
-            stack: error.stack
-        });
-        alert(`An error occurred: ${error.message}`);
+    } catch (err) {
+        showToast(`An error occurred: ${err.message}`, 'error');
         sendBtn.disabled = false;
+        if (sendSpan) sendSpan.textContent = 'Send Message';
     }
 }
 
 function resetForm() {
     messageInput.value = '';
     charCount.textContent = '0';
+    charCount.parentElement.classList.remove('warn', 'danger');
     selectedFile = null;
     imageInput.value = '';
     imagePreview.classList.add('hidden');
@@ -251,15 +249,10 @@ function closeSuccess() {
 function createConfetti() {
     const confettiCount = 30;
     const confettiContainer = document.createElement('div');
-    confettiContainer.style.position = 'fixed';
-    confettiContainer.style.top = '0';
-    confettiContainer.style.left = '0';
-    confettiContainer.style.width = '100%';
-    confettiContainer.style.height = '100%';
-    confettiContainer.style.pointerEvents = 'none';
-    confettiContainer.style.zIndex = '999';
+    confettiContainer.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999';
     document.body.appendChild(confettiContainer);
 
+    const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'];
     for (let i = 0; i < confettiCount; i += 1) {
         const confetti = document.createElement('div');
         const size = Math.random() * 8 + 4;
@@ -267,24 +260,16 @@ function createConfetti() {
         const delay = Math.random() * 0.5;
         const startX = Math.random() * window.innerWidth;
 
-        confetti.style.position = 'fixed';
-        confetti.style.width = `${size}px`;
-        confetti.style.height = `${size}px`;
-        confetti.style.background = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'][Math.floor(Math.random() * 5)];
-        confetti.style.left = `${startX}px`;
-        confetti.style.top = '-10px';
-        confetti.style.borderRadius = '50%';
-
+        confetti.style.cssText = `position:fixed;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random() * 5)]};left:${startX}px;top:-10px;border-radius:50%`;
         confettiContainer.appendChild(confetti);
 
-        const animation = confetti.animate([
-            { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-            { transform: `translate(${(Math.random() - 0.5) * 200}px, ${window.innerHeight + 20}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
-        ], {
-            duration: duration * 1000,
-            delay: delay * 1000,
-            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-        });
+        const animation = confetti.animate(
+            [
+                { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                { transform: `translate(${(Math.random() - 0.5) * 200}px, ${window.innerHeight + 20}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ],
+            { duration: duration * 1000, delay: delay * 1000, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }
+        );
 
         animation.onfinish = () => confetti.remove();
     }

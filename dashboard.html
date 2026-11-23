@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="dashboard-style.css">
     <!-- Cropper.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TYM">
+    <link rel="apple-touch-icon" href="./assets/tym-logo.png">
 </head>
 <body>
     <!-- Background Animation -->
@@ -73,7 +80,10 @@
                     <div class="card-icon" aria-hidden="true">📋</div>
                     <h2 class="card-title">Copy Your Link</h2>
                     <p class="card-subtitle">Copy your unique anonymous link</p>
-                    <button class="card-button" onclick="copyLinkToClipboard()">Copy Link →</button>
+                    <div class="link-display-wrapper">
+                        <p id="userLinkDisplay" class="user-link-display" aria-label="Your unique link"></p>
+                        <button class="card-button btn-copy-link" id="copyLinkInline" onclick="copyLinkToClipboard()" aria-label="Copy your unique link to clipboard">Copy Link →</button>
+                    </div>
                 </div>
             </div>
         </section>

@@ -1,6 +1,4 @@
-import {
-    supabase
-} from './utils.js';
+import { supabase } from './utils.js';
 
 const profileTrigger = document.getElementById('profileTrigger');
 const profileDropdown = document.getElementById('profileDropdown');
@@ -29,12 +27,19 @@ const matchIndicator = document.getElementById('matchIndicator');
 const passwordErrorMessage = document.getElementById('passwordErrorMessage');
 const passwordCancelBtn = document.getElementById('passwordCancelBtn');
 const passwordUpdateBtn = document.getElementById('passwordUpdateBtn');
+const userLinkDisplay = document.getElementById('userLinkDisplay');
+const copyLinkInline = document.getElementById('copyLinkInline');
 
 let cropper = null;
 let currentUserProfile = null;
 
 function getUserLink(username) {
-    return `${window.location.origin}${window.location.pathname.replace('dashboard.html', 'index.html')}?to=${encodeURIComponent(username)}`;
+    const origin = window.location.origin;
+    const basePath = window.location.pathname.replace(/dashboard\.html$/, '');
+    if (!origin || origin === 'null') {
+        return `${basePath}index.html?to=${encodeURIComponent(username)}`;
+    }
+    return `${origin}${basePath}index.html?to=${encodeURIComponent(username)}`;
 }
 
 function getDefaultAvatarUrl(displayName) {
@@ -42,31 +47,21 @@ function getDefaultAvatarUrl(displayName) {
 }
 
 function showToast(message, type = 'success') {
-    if (!toast) {
-        return;
-    }
-
+    if (!toast) return;
     toast.textContent = message;
     toast.className = 'toast';
-    if (type === 'error') {
-        toast.classList.add('error');
-    }
+    if (type === 'error') toast.classList.add('error');
     toast.classList.remove('hidden');
     setTimeout(() => toast.classList.add('hidden'), 2500);
 }
 
-  async function initializeDashboard() {
-    console.log("1. Checking session...");
+async function initializeDashboard() {
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
     if (sessionError || !session) {
-        console.error("No session found in Supabase Auth!", sessionError);
-        // window.location.href = './login.html'; // Disabled so we don't loop
+        window.location.href = './login.html';
         return;
     }
-
-    console.log("2. Session found! User ID:", session.user.id);
-    console.log("3. Fetching profile from database...");
 
     const { data: profile, error: profileError } = await supabase
         .from('profiles')
@@ -75,12 +70,10 @@ function showToast(message, type = 'success') {
         .single();
 
     if (profileError || !profile) {
-        console.error("4. MISSING PROFILE ERROR: The user logged in, but their profile is missing from the database table!", profileError);
-        // window.location.href = './login.html'; // Disabled so we don't loop
+        window.location.href = './login.html';
         return;
     }
 
-    console.log("5. Profile loaded successfully!", profile);
     currentUserProfile = profile;
 
     if (userNameElement) {
@@ -89,6 +82,15 @@ function showToast(message, type = 'success') {
 
     const avatarUrl = profile.avatar_url || getDefaultAvatarUrl(profile.display_name || profile.username);
     setAvatarImage(avatarUrl);
+
+    const link = getUserLink(profile.username);
+    if (userLinkDisplay) {
+        userLinkDisplay.textContent = link;
+    }
+    if (copyLinkInline) {
+        copyLinkInline.dataset.link = link;
+    }
+
     setupEventListeners();
 }
 
@@ -127,6 +129,10 @@ function setupEventListeners() {
         event.preventDefault();
         togglePasswordVisibility(confirmPasswordInput, toggleConfirmPassword);
     });
+
+    copyLinkInline?.addEventListener('click', () => {
+        copyLinkToClipboard();
+    });
 }
 
 function toggleProfileDropdown() {
@@ -151,9 +157,7 @@ function handleChangeAvatar() {
 
 function handleAvatarFileSelect(event) {
     const file = event.target.files[0];
-    if (!file) {
-        return;
-    }
+    if (!file) return;
 
     if (!file.type.match('image/(png|jpeg)')) {
         showToast('Please select a PNG or JPEG image', 'error');
@@ -167,9 +171,7 @@ function handleAvatarFileSelect(event) {
         openAvatarModal();
 
         avatarCropImage.onload = () => {
-            if (cropper) {
-                cropper.destroy();
-            }
+            if (cropper) cropper.destroy();
 
             if (window.Cropper) {
                 cropper = new Cropper(avatarCropImage, {
@@ -216,53 +218,38 @@ function handleConfirmAvatar() {
 
     canvas.toBlob(async (blob) => {
         if (!blob) {
-            console.error('Failed to create blob from canvas');
             showToast('Failed to process image', 'error');
             return;
         }
 
         try {
             if (!currentUserProfile?.id) {
-                console.error('User profile not found');
                 showToast('User profile not found', 'error');
                 return;
             }
 
             avatarConfirmBtn.disabled = true;
-            console.log('Starting avatar upload for user:', currentUserProfile.id);
             showToast('Uploading avatar...');
 
             const filePath = `${currentUserProfile.id}/avatar.jpg`;
-            console.log('Avatar file path:', filePath);
-            console.log('Blob size:', blob.size, 'bytes');
 
-            const { data, error: uploadError } = await supabase.storage
+            const { error: uploadError } = await supabase.storage
                 .from('avatars')
                 .upload(filePath, blob, { upsert: true });
 
             if (uploadError) {
-                console.error('❌ Avatar upload error:', {
-                    message: uploadError.message,
-                    status: uploadError.status,
-                    statusCode: uploadError.statusCode,
-                    error: uploadError.error
-                });
                 showToast(`Upload failed: ${uploadError.message}`, 'error');
                 avatarConfirmBtn.disabled = false;
                 return;
             }
 
-            console.log('✓ Avatar uploaded successfully');
-            
             const { data: urlData } = supabase.storage
                 .from('avatars')
                 .getPublicUrl(filePath);
-            
+
             const publicUrl = urlData?.publicUrl;
-            console.log('Public URL:', publicUrl);
 
             if (!publicUrl) {
-                console.error('Failed to get public URL');
                 showToast('Failed to get public URL', 'error');
                 avatarConfirmBtn.disabled = false;
                 return;
@@ -274,28 +261,17 @@ function handleConfirmAvatar() {
                 .eq('id', currentUserProfile.id);
 
             if (updateError) {
-                console.error('❌ Profile update error:', {
-                    message: updateError.message,
-                    details: updateError.details,
-                    hint: updateError.hint
-                });
                 showToast(`Profile update failed: ${updateError.message}`, 'error');
                 avatarConfirmBtn.disabled = false;
                 return;
             }
 
-            console.log('✓ Profile updated successfully');
             currentUserProfile.avatar_url = publicUrl;
             setAvatarImage(publicUrl);
             showToast('Avatar updated successfully');
             closeAvatarModal();
             avatarConfirmBtn.disabled = false;
         } catch (error) {
-            console.error('❌ Avatar update error:', {
-                name: error.name,
-                message: error.message,
-                stack: error.stack
-            });
             showToast(`Error: ${error.message}`, 'error');
             avatarConfirmBtn.disabled = false;
         }
@@ -312,6 +288,7 @@ function openPasswordModal() {
     changePasswordModal.setAttribute('aria-hidden', 'false');
     passwordUpdateBtn.disabled = true;
     document.body.style.overflow = 'hidden';
+    setTimeout(() => newPasswordInput?.focus(), 100);
 }
 
 function closePasswordModal() {
@@ -320,7 +297,10 @@ function closePasswordModal() {
     document.body.style.overflow = '';
     changePasswordForm.reset();
     hidePasswordError();
-    matchIndicator.classList.add('hidden');
+    if (matchIndicator) {
+        matchIndicator.textContent = '';
+        matchIndicator.className = 'match-indicator hidden';
+    }
     passwordUpdateBtn.disabled = true;
 }
 
@@ -334,41 +314,57 @@ function validatePasswordMatch() {
     const newPassword = newPasswordInput.value;
     const confirmPassword = confirmPasswordInput.value;
 
-    matchIndicator.classList.remove('hidden');
+    if (matchIndicator) matchIndicator.classList.remove('hidden');
 
     if (!newPassword || !confirmPassword) {
-        matchIndicator.textContent = 'Enter both fields';
+        if (matchIndicator) {
+            matchIndicator.textContent = 'Enter both fields';
+            matchIndicator.className = 'match-indicator';
+        }
         passwordUpdateBtn.disabled = true;
         return;
     }
 
     if (newPassword.length < 6) {
-        matchIndicator.textContent = 'Minimum 6 characters';
+        if (matchIndicator) {
+            matchIndicator.textContent = 'Minimum 6 characters';
+            matchIndicator.className = 'match-indicator mismatch';
+        }
         passwordUpdateBtn.disabled = true;
         return;
     }
 
     if (newPassword !== confirmPassword) {
-        matchIndicator.textContent = 'Passwords do not match';
+        if (matchIndicator) {
+            matchIndicator.textContent = '✗ Passwords do not match';
+            matchIndicator.className = 'match-indicator mismatch';
+        }
         passwordUpdateBtn.disabled = true;
         return;
     }
 
-    matchIndicator.textContent = 'Passwords match';
+    if (matchIndicator) {
+        matchIndicator.textContent = '✓ Passwords match';
+        matchIndicator.className = 'match-indicator matched';
+    }
     passwordUpdateBtn.disabled = false;
 }
 
 function showPasswordError(message) {
-    passwordErrorMessage.textContent = message;
-    passwordErrorMessage.classList.remove('hidden');
+    if (passwordErrorMessage) {
+        passwordErrorMessage.textContent = message;
+        passwordErrorMessage.classList.remove('hidden');
+    }
 }
 
 function hidePasswordError() {
-    passwordErrorMessage.textContent = '';
-    passwordErrorMessage.classList.add('hidden');
+    if (passwordErrorMessage) {
+        passwordErrorMessage.textContent = '';
+        passwordErrorMessage.classList.add('hidden');
+    }
 }
 
-function handlePasswordSubmit(event) {
+async function handlePasswordSubmit(event) {
     event.preventDefault();
     hidePasswordError();
 
@@ -388,8 +384,17 @@ function handlePasswordSubmit(event) {
     passwordUpdateBtn.disabled = true;
     passwordUpdateBtn.textContent = 'Updating...';
 
-    showToast('Password update will be implemented in Phase 4');
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+
     passwordUpdateBtn.textContent = 'Update Password';
+
+    if (error) {
+        showPasswordError(error.message || 'Failed to update password. Please try again.');
+        passwordUpdateBtn.disabled = false;
+        return;
+    }
+
+    showToast('Password updated successfully!');
     closePasswordModal();
 }
 
@@ -405,7 +410,7 @@ function shareOn(platform) {
     }
 
     const userLink = getUserLink(currentUserProfile.username);
-    const shareText = `Send "${currentUserProfile.username}" an anonymous message on Talk your mind- TYM\n${userLink}`;
+    const shareText = `Send "${currentUserProfile.username}" an anonymous message on Talk your mind - TYM\n${userLink}`;
     let shareUrl = '';
 
     switch (platform) {
@@ -422,7 +427,7 @@ function shareOn(platform) {
         case 'snapchat':
         default:
             copyLinkToClipboard();
-            showToast('Link copied. Paste it into your app.');
+            showToast('Link copied! Paste it into your app.');
             return;
     }
 
@@ -437,7 +442,7 @@ function copyLinkToClipboard() {
 
     const userLink = getUserLink(currentUserProfile.username);
     navigator.clipboard.writeText(userLink)
-        .then(() => showToast('Link copied to clipboard'))
+        .then(() => showToast('Link copied to clipboard!'))
         .catch(() => showToast('Failed to copy link', 'error'));
 }
 

@@ -569,6 +569,49 @@ body {
 }
 
 /* ================================
+   USERNAME SUGGESTION CHIPS
+   ================================ */
+
+.suggestion-chips {
+    margin-top: 10px;
+}
+
+.suggestion-chips.hidden {
+    display: none;
+}
+
+.chips-label {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.chips-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 6px 14px;
+    background: rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.4);
+    border-radius: 20px;
+    color: #667eea;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 36px;
+}
+
+.chip:hover {
+    background: rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+    transform: translateY(-1px);
+}
+
+/* ================================
    SIGNIN LINK
    ================================ */
 

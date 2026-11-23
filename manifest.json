@@ -1,0 +1,24 @@
+{
+    "name": "TYM – Talk Your Mind",
+    "short_name": "TYM",
+    "description": "Receive anonymous photos and messages from your friends.",
+    "start_url": "./landing.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0f0b1a",
+    "theme_color": "#667eea",
+    "icons": [
+        {
+            "src": "./assets/tym-logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./assets/tym-logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

@@ -6,45 +6,54 @@
     <title>Inbox - TYM</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="inbox.css">
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TYM">
+    <link rel="apple-touch-icon" href="./assets/tym-logo.png">
 </head>
 <body>
-    <div class="background">
+    <div class="background" aria-hidden="true">
         <div class="gradient-bg"></div>
         <div class="blur-blob blob1"></div>
         <div class="blur-blob blob2"></div>
     </div>
 
-    <!-- Navbar (same structure as dashboard) -->
-    <nav class="navbar">
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <div class="logo">
-                <img src="assets/tym-logo.png" alt="TYM logo" class="logo-image">
+                <img src="assets/tym-logo.png" alt="TYM – Talk Your Mind" class="logo-image">
             </div>
 
             <div class="profile-section">
-                <button class="profile-trigger" id="profileTrigger">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User Avatar" class="avatar-image">
+                <button class="profile-trigger" id="profileTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User avatar" class="avatar-image">
                     <span class="user-name" id="userName">User</span>
-                    <span class="chevron-icon">▼</span>
+                    <span class="chevron-icon" aria-hidden="true">▼</span>
                 </button>
 
-                <div class="profile-dropdown hidden" id="profileDropdown">
-                    <button class="dropdown-item" id="logoutBtn">🚪 Logout</button>
+                <div class="profile-dropdown hidden" id="profileDropdown" role="menu">
+                    <button class="dropdown-item" id="logoutBtn" role="menuitem">
+                        <span aria-hidden="true">🚪</span> Logout
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <main class="main-container">
-        <section class="messages-section">
+        <section class="messages-section" aria-label="Your anonymous messages">
             <h1 class="page-title">Inbox</h1>
 
-            <div id="messagesContainer" class="messages-container">
+            <div id="messagesContainer" class="messages-container" role="feed" aria-label="Anonymous messages" aria-live="polite">
                 <!-- Messages are rendered here -->
             </div>
 
-            <div id="zeroState" class="zero-state hidden">
-                <div class="zero-graphic">📭</div>
+            <div id="zeroState" class="zero-state hidden" role="status">
+                <div class="zero-graphic" aria-hidden="true">📭</div>
                 <h3>Waiting for messages...</h3>
                 <p>Share your link so people can send anonymous photos and messages.</p>
             </div>
@@ -52,10 +61,10 @@
     </main>
 
     <!-- Share Modal -->
-    <div id="shareModal" class="modal hidden" aria-hidden="true">
+    <div id="shareModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Share this message">
         <div class="modal-backdrop" id="modalBackdrop"></div>
         <div class="modal-panel">
-            <button class="modal-close" id="modalClose">✕</button>
+            <button class="modal-close" id="modalClose" aria-label="Close share dialog">✕</button>
 
             <div class="modal-content">
                 <h2>Share Response</h2>
@@ -66,7 +75,7 @@
                             <div class="capture-top"></div>
                             <div class="capture-body">
                                 <p id="captureText" class="capture-text"></p>
-                                <img id="captureImage" class="capture-image hidden" alt="Attached" crossorigin="anonymous">
+                                <img id="captureImage" class="capture-image hidden" alt="Attached image" crossorigin="anonymous">
                             </div>
                             <div class="capture-footer">
                                 <img src="assets/tym-logo.png" alt="TYM logo" class="capture-logo">
@@ -83,10 +92,17 @@
         </div>
     </div>
 
-    <div id="toast" class="toast hidden"></div>
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Full size image viewer">
+        <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close image viewer">✕</button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="Full size message image">
+    </div>
+
+    <div id="toast" class="toast hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <!-- html2canvas CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script type="module" src="./inbox.js?v=1.0.1"></script>
+    <script type="module" src="./inbox.js?v=2.0.0"></script>
 </body>
 </html>

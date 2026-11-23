@@ -1,6 +1,4 @@
-import {
-    supabase
-} from './utils.js';
+import { supabase } from './utils.js';
 
 const signupForm = document.getElementById('signupForm');
 const usernameInput = document.getElementById('username');
@@ -10,6 +8,7 @@ const previewUsername = document.getElementById('previewUsername');
 const submitBtn = document.getElementById('submitBtn');
 const errorMessage = document.getElementById('errorMessage');
 const errorText = document.getElementById('errorText');
+const suggestionChips = document.getElementById('suggestionChips');
 
 function sanitizeDisplayName(value) {
     return value.replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
@@ -51,21 +50,59 @@ function suggestAvailableUsernames(baseUsername, accounts, maxSuggestions = 3) {
 
 function showError(message) {
     if (!errorMessage || !errorText) {
-        alert(message);
         return;
     }
-
     errorText.textContent = message;
     errorMessage.classList.remove('hidden');
 }
 
 function hideError() {
-    if (!errorMessage || !errorText) {
+    if (!errorMessage || !errorText) return;
+    errorText.textContent = '';
+    errorMessage.classList.add('hidden');
+}
+
+function renderSuggestionChips(suggestions) {
+    if (!suggestionChips) return;
+    suggestionChips.innerHTML = '';
+
+    if (!suggestions.length) {
+        suggestionChips.classList.add('hidden');
         return;
     }
 
-    errorText.textContent = '';
-    errorMessage.classList.add('hidden');
+    const label = document.createElement('p');
+    label.className = 'chips-label';
+    label.textContent = 'Try one of these:';
+    suggestionChips.appendChild(label);
+
+    const row = document.createElement('div');
+    row.className = 'chips-row';
+
+    suggestions.forEach((name) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chip';
+        chip.textContent = name;
+        chip.setAttribute('aria-label', `Use username ${name}`);
+        chip.addEventListener('click', () => {
+            usernameInput.value = name;
+            previewUsername.textContent = name;
+            hideError();
+            clearSuggestionChips();
+            usernameInput.focus();
+        });
+        row.appendChild(chip);
+    });
+
+    suggestionChips.appendChild(row);
+    suggestionChips.classList.remove('hidden');
+}
+
+function clearSuggestionChips() {
+    if (!suggestionChips) return;
+    suggestionChips.innerHTML = '';
+    suggestionChips.classList.add('hidden');
 }
 
 usernameInput.addEventListener('input', (event) => {
@@ -78,6 +115,10 @@ usernameInput.addEventListener('input', (event) => {
     previewUsername.textContent = sanitized.trim()
         ? generateUniqueLink(sanitized)
         : 'username';
+
+    // Clear suggestions when the user is typing again
+    clearSuggestionChips();
+    hideError();
 });
 
 togglePasswordBtn.addEventListener('click', (event) => {
@@ -96,6 +137,7 @@ function handleSignup(event) {
 async function handleSignupAsync(event) {
     event.preventDefault();
     hideError();
+    clearSuggestionChips();
 
     const chosenUsername = usernameInput.value.trim().toLowerCase();
     const userPassword = passwordInput.value;
@@ -145,16 +187,9 @@ async function handleSignupAsync(event) {
             : (allProfiles || []).map((profile) => ({ username: profile.username }));
 
         const suggestions = suggestAvailableUsernames(chosenUsername, accounts, 3);
-        const suggestionText = suggestions.length > 0
-            ? ` Try: ${suggestions.join(', ')}.`
-            : '';
 
-        showError(`This username is already taken.${suggestionText}`);
-
-        if (suggestions.length > 0) {
-            previewUsername.textContent = suggestions[0];
-        }
-
+        showError('This username is already taken.');
+        renderSuggestionChips(suggestions);
         usernameInput.focus();
         return;
     }

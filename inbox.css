@@ -101,8 +101,42 @@ body{
 .capture-logo{display:inline-block;width:auto;height:30px}
 
 .modal-actions{display:flex;gap:10px;margin-top:8px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:linear-gradient(90deg,#4caf50,#45a049);color:#fff;padding:10px 14px;border-radius:8px;font-weight:700}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;z-index:9000;min-width:200px;max-width:90vw;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.toast.error{background:linear-gradient(135deg,#e53e3e,#c53030)}
 .toast.hidden{display:none}
+
+/* Delete button */
+.btn-delete{
+    border:1px solid rgba(255,255,255,0.12);
+    cursor:pointer;
+    font-weight:700;
+    color:rgba(255,255,255,0.65);
+    background:transparent;
+    padding:10px 14px;
+    border-radius:10px;
+    min-width:72px;
+    min-height:44px;
+    transition:all 0.18s ease;
+}
+.btn-delete:hover{color:#ff5555;border-color:#ff5555;background:rgba(255,85,85,0.08)}
+.btn-delete.confirming{color:#ff5555;border-color:#ff5555;background:rgba(255,85,85,0.15)}
+
+/* Skeleton loader */
+.skeleton-card{pointer-events:none;animation:skeletonPulse 1.4s ease-in-out infinite}
+@keyframes skeletonPulse{0%,100%{opacity:0.4}50%{opacity:0.8}}
+.skeleton-line{height:14px;border-radius:6px;background:rgba(255,255,255,0.08);margin-bottom:10px}
+.skeleton-line.short{width:35%}
+.skeleton-line.medium{width:70%}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center}
+.lightbox.hidden{display:none}
+.lightbox-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.92);cursor:zoom-out}
+.lightbox-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.lightbox-close:hover{background:rgba(255,255,255,0.2)}
+.lightbox-image{position:relative;z-index:5;max-width:95vw;max-height:90vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6)}
+.message-image{cursor:zoom-in;transition:opacity 0.2s}
+.message-image:hover{opacity:0.9}
 
 /* RESPONSIVE DESIGN */
 
@@ -126,6 +160,12 @@ body{
     .capture-area{width:340px;height:600px}
     .capture-body{padding:20px}
     .capture-text{font-size:18px}
+}
+
+/* Minimum tap target enforcement */
+@media (pointer:coarse){
+    .btn-share,.btn-delete,.btn,.dropdown-item,.profile-trigger{min-height:44px;min-width:44px}
+    .modal-close,.lightbox-close{width:48px;height:48px}
 }
 
 /* Mobile devices (< 600px) */

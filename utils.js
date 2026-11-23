@@ -240,3 +240,9 @@ export function saveUserAvatar(userId, base64String) {
 
     storage.setItem(getAvatarKey(userId), String(base64String || ''));
 }
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+}

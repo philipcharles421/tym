@@ -667,6 +667,110 @@ body {
     }
 }
 
+/* ================================
+   TOAST NOTIFICATION
+   ================================ */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 28px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    z-index: 2000;
+    min-width: 200px;
+    max-width: 90vw;
+    text-align: center;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.toast.error {
+    background: linear-gradient(135deg, #e53e3e, #c53030);
+}
+
+.toast.hidden {
+    display: none;
+}
+
+/* ================================
+   CHAR COUNT WARNINGS
+   ================================ */
+
+.char-count.warn {
+    color: #dd6b20;
+    font-weight: 600;
+}
+
+.char-count.danger {
+    color: #e53e3e;
+    font-weight: 700;
+}
+
+/* ================================
+   SUCCESS MODAL IMPROVEMENTS
+   ================================ */
+
+.success-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.success-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.btn-send-another {
+    padding: 12px 24px;
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.btn-send-another:hover {
+    background: rgba(102, 126, 234, 0.08);
+    transform: translateY(-2px);
+}
+
+/* Screen reader only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ================================
+   LOADING STATE - SEND PAGE
+   ================================ */
+
+.btn-send:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
 /* Additional responsive hardening */
 @media (max-height: 700px) {
     .container {
