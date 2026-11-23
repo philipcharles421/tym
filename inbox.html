@@ -73,13 +73,21 @@
                 <div class="preview-wrapper">
                     <div class="capture-area" id="captureArea">
                         <div class="capture-content">
-                            <div class="capture-top"></div>
-                            <div class="capture-body">
-                                <p id="captureText" class="capture-text"></p>
+                            <div class="capture-top">
+                                <img src="assets/tym-logo.png" alt="TYM" class="capture-logo-top">
+                                <span class="capture-anon-label">Anonymous</span>
+                            </div>
+                            <div class="capture-body" id="captureBody">
                                 <img id="captureImage" class="capture-image hidden" alt="Attached image" crossorigin="anonymous">
+                                <div class="capture-quote-wrap">
+                                    <span class="quote-mark open">&#8220;</span>
+                                    <p id="captureText" class="capture-text"></p>
+                                    <span class="quote-mark close">&#8221;</span>
+                                </div>
                             </div>
                             <div class="capture-footer">
-                                <img src="assets/tym-logo.png" alt="TYM logo" class="capture-logo">
+                                <span id="captureUsername" class="capture-username">@username</span>
+                                <span class="capture-domain">tym.app</span>
                             </div>
                         </div>
                     </div>

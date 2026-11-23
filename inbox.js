@@ -1,6 +1,7 @@
 import { supabase } from './utils.js';
 
 let currentUserSession = null;
+let currentUserProfile = null;
 let messages = [];
 let isRenderingShareImage = false;
 let messagesRealtimeChannel = null;
@@ -13,6 +14,8 @@ const modalClose = document.getElementById('modalClose');
 const captureArea = document.getElementById('captureArea');
 const captureText = document.getElementById('captureText');
 const captureImage = document.getElementById('captureImage');
+const captureBody = document.getElementById('captureBody');
+const captureUsernameEl = document.getElementById('captureUsername');
 const downloadBtn = document.getElementById('downloadBtn');
 const shareBtn = document.getElementById('shareBtn');
 const toast = document.getElementById('toast');
@@ -72,6 +75,7 @@ async function initializeInbox() {
         }
 
         const userProfile = profile[0];
+        currentUserProfile = userProfile;
 
         if (userNameElement) {
             userNameElement.textContent = userProfile.display_name || userProfile.username || 'User';
@@ -486,15 +490,23 @@ function openShareModal(index) {
     if (!shareModal || !captureText) return;
     const message = messages[index];
     captureText.textContent = message.content;
-    if (captureImage) {
+
+    if (captureUsernameEl && currentUserProfile) {
+        captureUsernameEl.textContent = '@' + (currentUserProfile.username || 'you');
+    }
+
+    if (captureImage && captureBody) {
         if (message.image_url) {
             captureImage.src = message.image_url;
             captureImage.classList.remove('hidden');
+            captureBody.classList.add('has-image');
         } else {
             captureImage.classList.add('hidden');
             captureImage.src = '';
+            captureBody.classList.remove('has-image');
         }
     }
+
     shareModal.classList.remove('hidden');
     shareModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';

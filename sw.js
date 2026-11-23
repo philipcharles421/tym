@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tym-v4';
+const CACHE_NAME = 'tym-v5';
 const PRECACHE_URLS = [
     './landing.html',
     './login.html',
