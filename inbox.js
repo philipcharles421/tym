@@ -475,7 +475,7 @@ async function captureShareImageBlob() {
         const canvas = await html2canvas(captureArea, {
             backgroundColor: null,
             useCORS: true,
-            scale: Math.min(2, window.devicePixelRatio || 1)
+            scale: Math.max(3, window.devicePixelRatio || 3)
         });
         const blob = await new Promise((resolve) => { canvas.toBlob((result) => resolve(result), 'image/png', 1); });
         return blob;
