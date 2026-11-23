@@ -15,7 +15,7 @@ html, body {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: #1a1a2e;
     line-height: 1.6;
     background: #0f0f1e;
@@ -40,28 +40,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-        135deg,
-        #667eea 0%,
-        #764ba2 25%,
-        #5a189a 50%,
-        #240046 75%,
-        #0f0f1e 100%
-    );
-    animation: gradientShift 12s ease infinite;
-    background-size: 300% 300%;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    background: linear-gradient(160deg, #1e1040 0%, #150c35 40%, #0f0b1a 100%);
 }
 
 .blur-blob {
@@ -77,34 +56,25 @@ body {
     background: #667eea;
     top: -200px;
     right: -100px;
-    animation: float 8s ease-in-out infinite;
+    opacity: 0.18;
 }
 
 .blob2 {
     width: 350px;
     height: 350px;
-    background: #f093fb;
+    background: #764ba2;
     bottom: -150px;
     left: -100px;
-    animation: float 10s ease-in-out infinite reverse;
+    opacity: 0.15;
 }
 
 .blob3 {
     width: 300px;
     height: 300px;
-    background: #00d4ff;
+    background: #764ba2;
     top: 50%;
     right: 10%;
-    animation: float 12s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-50px);
-    }
+    opacity: 0.12;
 }
 
 /* ================================
@@ -640,6 +610,20 @@ body {
 
 .hidden {
     display: none;
+}
+
+/* ================================
+   AUTH LOGO
+   ================================ */
+
+.auth-logo-wrap {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.auth-logo {
+    height: 48px;
+    width: auto;
 }
 
 /* ================================

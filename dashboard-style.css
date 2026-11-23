@@ -15,7 +15,7 @@ html, body {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     color: #e0e0e0;
     line-height: 1.6;
     background: linear-gradient(135deg, #0f0f1e 0%, #1a1a3e 100%);
@@ -43,27 +43,11 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(
-        135deg,
-        #667eea 0%,
-        #764ba2 25%,
-        #5a189a 50%,
-        #240046 75%,
-        #0f0f1e 100%
+        160deg,
+        #1e1040 0%,
+        #150c35 40%,
+        #0f0b1a 100%
     );
-    animation: gradientShift 12s ease infinite;
-    background-size: 300% 300%;
-}
-
-@keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 .blur-blob {
@@ -79,25 +63,25 @@ body {
     background: #667eea;
     top: -200px;
     right: -100px;
-    animation: float 8s ease-in-out infinite;
+    opacity: 0.25;
 }
 
 .blob2 {
     width: 350px;
     height: 350px;
-    background: #f093fb;
+    background: #764ba2;
     bottom: -150px;
     left: -100px;
-    animation: float 10s ease-in-out infinite reverse;
+    opacity: 0.2;
 }
 
 .blob3 {
     width: 300px;
     height: 300px;
-    background: #00d4ff;
+    background: #5a189a;
     top: 50%;
     right: 10%;
-    animation: float 12s ease-in-out infinite;
+    opacity: 0.15;
 }
 
 @keyframes float {
@@ -358,37 +342,27 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 140, 0, 0.1), rgba(255, 0, 128, 0.1));
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
     z-index: -1;
 }
 
 .card-view-messages,
 .card-generate-link {
-    background: linear-gradient(135deg, rgba(255, 140, 0, 0.15), rgba(255, 0, 128, 0.15));
-    border: 1px solid rgba(255, 140, 0, 0.3);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+    border: 1px solid rgba(102, 126, 234, 0.3);
 }
 
 .action-card:hover {
     transform: translateY(-8px);
-    background: linear-gradient(135deg, rgba(255, 140, 0, 0.25), rgba(255, 0, 128, 0.25));
-    border: 1px solid rgba(255, 140, 0, 0.5);
-    box-shadow: 0 15px 40px rgba(255, 140, 0, 0.2);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25), rgba(118, 75, 162, 0.25));
+    border: 1px solid rgba(102, 126, 234, 0.5);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
 }
 
 .card-icon {
-    font-size: 3.5rem;
+    font-size: 3rem;
     margin-bottom: 20px;
     display: block;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
 }
 
 .card-title {
@@ -406,7 +380,7 @@ body {
 
 .card-button {
     padding: 12px 28px;
-    background: linear-gradient(to right, #ff8c00, #ff0080);
+    background: linear-gradient(to right, #667eea, #764ba2);
     color: white;
     border: none;
     border-radius: 10px;
@@ -414,12 +388,12 @@ body {
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .card-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(255, 140, 0, 0.5);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
 }
 
 .card-button:active {
@@ -479,10 +453,10 @@ body {
 }
 
 .share-button:hover {
-    background: linear-gradient(135deg, rgba(255, 140, 0, 0.3), rgba(255, 0, 128, 0.3));
-    border: 1px solid rgba(255, 140, 0, 0.5);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+    border: 1px solid rgba(102, 126, 234, 0.5);
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
 }
 
 .share-button:active {
@@ -490,7 +464,19 @@ body {
 }
 
 .social-icon {
-    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    transition: background 0.3s ease;
+}
+
+.social-icon svg {
+    width: 24px;
+    height: 24px;
 }
 
 .social-text {
@@ -498,6 +484,20 @@ body {
     font-size: 0.8rem;
     line-height: 1.3;
 }
+
+/* Brand icon colors */
+.share-button.instagram .social-icon { color: #e1306c; }
+.share-button.snapchat  .social-icon { color: #FFFC00; }
+.share-button.whatsapp  .social-icon { color: #25D366; }
+.share-button.twitter   .social-icon { color: #ffffff; }
+.share-button.facebook  .social-icon { color: #1877F2; }
+
+/* Brand hover tints */
+.share-button.instagram:hover { background: rgba(225, 48, 108, 0.12); border-color: rgba(225, 48, 108, 0.4); }
+.share-button.snapchat:hover  { background: rgba(255, 252,   0, 0.08); border-color: rgba(255, 252,   0, 0.35); }
+.share-button.whatsapp:hover  { background: rgba( 37, 211, 102, 0.12); border-color: rgba( 37, 211, 102, 0.4); }
+.share-button.twitter:hover   { background: rgba(255, 255, 255, 0.10); border-color: rgba(255, 255, 255, 0.4); }
+.share-button.facebook:hover  { background: rgba( 24, 119, 242, 0.12); border-color: rgba( 24, 119, 242, 0.4); }
 
 /* ================================
    FOOTER
@@ -837,10 +837,6 @@ body {
         font-size: 0.75rem;
     }
 
-    .social-icon {
-        font-size: 1.6rem;
-    }
-
     .toast {
         bottom: 20px;
         padding: 12px 20px;
@@ -936,9 +932,9 @@ body {
 
 .avatar-modal-panel {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 1px solid rgba(255, 140, 0, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.2);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(255, 140, 0, 0.1), 0 0 50px rgba(255, 0, 128, 0.05);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1), 0 0 50px rgba(118, 75, 162, 0.05);
     padding: 30px;
     max-width: 500px;
     width: 90%;
@@ -962,7 +958,7 @@ body {
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 140, 0, 0.15);
+    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
 }
 
 .avatar-modal-title {
@@ -989,8 +985,8 @@ body {
 }
 
 .avatar-modal-close:hover {
-    background: rgba(255, 140, 0, 0.1);
-    color: #ff8c00;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
 }
 
 .avatar-modal-body {
@@ -1003,7 +999,7 @@ body {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 12px;
     overflow: hidden;
-    border: 2px solid rgba(255, 140, 0, 0.2);
+    border: 2px solid rgba(102, 126, 234, 0.2);
 }
 
 .avatar-crop-image {
@@ -1057,14 +1053,14 @@ body {
 }
 
 .avatar-btn-primary {
-    background: linear-gradient(to right, #ff8c00, #ff0080);
+    background: linear-gradient(to right, #667eea, #764ba2);
     color: #fff;
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .avatar-btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .avatar-btn-primary:active {
@@ -1129,9 +1125,9 @@ body {
 
 .password-modal-panel {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 1px solid rgba(255, 140, 0, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.2);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(255, 140, 0, 0.1), 0 0 50px rgba(255, 0, 128, 0.05);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1), 0 0 50px rgba(118, 75, 162, 0.05);
     padding: 30px;
     max-width: 450px;
     width: 90%;
@@ -1144,7 +1140,7 @@ body {
     align-items: center;
     margin-bottom: 25px;
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 140, 0, 0.15);
+    border-bottom: 1px solid rgba(102, 126, 234, 0.15);
 }
 
 .password-modal-title {
@@ -1171,8 +1167,8 @@ body {
 }
 
 .password-modal-close:hover {
-    background: rgba(255, 140, 0, 0.1);
-    color: #ff8c00;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
 }
 
 .password-form {
@@ -1204,7 +1200,7 @@ body {
     width: 100%;
     padding: 12px 42px 12px 14px;
     background: rgba(255, 255, 255, 0.05);
-    border: 1.5px solid rgba(255, 140, 0, 0.2);
+    border: 1.5px solid rgba(102, 126, 234, 0.2);
     border-radius: 10px;
     color: #fff;
     font-size: 1rem;
@@ -1214,8 +1210,8 @@ body {
 .form-input:focus {
     outline: none;
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 140, 0, 0.5);
-    box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+    border-color: rgba(102, 126, 234, 0.5);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .form-input::placeholder {
@@ -1238,7 +1234,7 @@ body {
 }
 
 .toggle-password-visibility:hover {
-    color: #ff8c00;
+    color: #667eea;
 }
 
 .password-hint {
@@ -1327,14 +1323,14 @@ body {
 }
 
 .password-btn-primary {
-    background: linear-gradient(to right, #ff8c00, #ff0080);
+    background: linear-gradient(to right, #667eea, #764ba2);
     color: #fff;
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .password-btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .password-btn-primary:active:not(:disabled) {
