@@ -18,6 +18,22 @@ let selectedFile = null;
 let recipientProfile = null;
 let recipientDisplayName = 'AnonymousUser';
 
+const RATE_LIMIT_MS = 30_000; // 30 seconds between sends
+const RATE_LIMIT_KEY = 'tym_last_send';
+
+function getRateLimitStatus() {
+    const last = parseInt(localStorage.getItem(RATE_LIMIT_KEY) || '0', 10);
+    const elapsed = Date.now() - last;
+    if (elapsed < RATE_LIMIT_MS) {
+        return { allowed: false, remaining: Math.ceil((RATE_LIMIT_MS - elapsed) / 1000) };
+    }
+    return { allowed: true, remaining: 0 };
+}
+
+function markMessageSent() {
+    localStorage.setItem(RATE_LIMIT_KEY, String(Date.now()));
+}
+
 function showToast(message, type = 'success') {
     if (!toast) return;
     toast.textContent = message;
@@ -177,6 +193,12 @@ async function handleSendMessage() {
         return;
     }
 
+    const { allowed, remaining } = getRateLimitStatus();
+    if (!allowed) {
+        showToast(`Please wait ${remaining}s before sending another message.`, 'error');
+        return;
+    }
+
     sendBtn.disabled = true;
     const sendSpan = sendBtn.querySelector('span:first-child');
     if (sendSpan) sendSpan.textContent = 'Sending...';
@@ -185,7 +207,8 @@ async function handleSendMessage() {
 
     try {
         if (selectedFile) {
-            const uniqueFileName = `${Date.now()}-${selectedFile.name}`;
+            const ext = (selectedFile.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const uniqueFileName = `${crypto.randomUUID()}.${ext}`;
 
             const { error: uploadError } = await supabase.storage
                 .from('message-images')
@@ -217,6 +240,7 @@ async function handleSendMessage() {
             return;
         }
 
+        markMessageSent();
         showSuccessAnimation();
         resetForm();
     } catch (err) {

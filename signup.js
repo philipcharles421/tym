@@ -160,8 +160,8 @@ async function handleSignupAsync(event) {
         return;
     }
 
-    if (!userPassword || userPassword.length < 8) {
-        showError('Password must be at least 8 characters.');
+    if (!userPassword || userPassword.length < 6) {
+        showError('Password must be at least 6 characters.');
         passwordInput.focus();
         return;
     }
