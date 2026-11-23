@@ -43,8 +43,8 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.classList.add('hidden'), 3500);
 }
 
-function getDefaultAvatarUrl(username) {
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(username || 'user')}`;
+function getDefaultAvatarUrl() {
+    return './assets/default-avatar.svg';
 }
 
 function applyRecipientAvatar() {

@@ -307,17 +307,17 @@ body {
 }
 
 .hero-headline {
-    font-size: 3.5rem;
+    font-size: clamp(1.75rem, 5vw, 3.5rem);
     font-weight: 900;
     color: white;
     margin-bottom: 20px;
     line-height: 1.2;
-    letter-spacing: -1px;
+    letter-spacing: clamp(-0.5px, -0.03em, -1px);
     text-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
 }
 
 .hero-subheadline {
-    font-size: 1.25rem;
+    font-size: clamp(0.95rem, 2.2vw, 1.25rem);
     color: rgba(255, 255, 255, 0.85);
     margin-bottom: 30px;
     line-height: 1.6;
@@ -520,7 +520,7 @@ body {
 
 .section-title {
     text-align: center;
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 900;
     color: white;
     margin-bottom: 60px;
@@ -667,7 +667,7 @@ body {
 }
 
 .cta-headline {
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 900;
     color: white;
     margin-bottom: 40px;
@@ -960,8 +960,9 @@ body {
         font-size: 0.8rem;
     }
 
+    /* Hide arrows between steps when stacked — progression is visually clear */
     .step-arrow {
-        font-size: 1.5rem;
+        display: none;
     }
 
     .cta-section {

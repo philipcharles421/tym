@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tym-v2';
+const CACHE_NAME = 'tym-v4';
 const PRECACHE_URLS = [
     './landing.html',
     './login.html',
@@ -19,7 +19,8 @@ const PRECACHE_URLS = [
     './signup.js',
     './login.js',
     './landing.js',
-    './assets/tym-logo.png'
+    './assets/tym-logo.png',
+    './assets/default-avatar.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -43,7 +44,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     if (event.request.method !== 'GET') return;
     if (event.request.url.includes('supabase.co')) return;
-    if (event.request.url.includes('dicebear.com')) return;
 
     event.respondWith(
         caches.match(event.request).then((cached) => cached || fetch(event.request))

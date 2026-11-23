@@ -42,8 +42,8 @@ function getUserLink(username) {
     return `${origin}${basePath}index.html?to=${encodeURIComponent(username)}`;
 }
 
-function getDefaultAvatarUrl(displayName) {
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(displayName || 'user')}`;
+function getDefaultAvatarUrl() {
+    return './assets/default-avatar.svg';
 }
 
 function showToast(message, type = 'success') {

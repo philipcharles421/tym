@@ -26,8 +26,8 @@ const lightboxImage = document.getElementById('lightboxImage');
 const lightboxClose = document.getElementById('lightboxClose');
 const lightboxBackdrop = document.getElementById('lightboxBackdrop');
 
-function getDefaultAvatarUrl(displayName) {
-    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(displayName || 'User')}`;
+function getDefaultAvatarUrl() {
+    return './assets/default-avatar.svg';
 }
 
 function showToast(message, isError = false) {
