@@ -210,7 +210,12 @@ async function handleSignupAsync(event) {
     });
 
     if (signUpError) {
-        showError(signUpError.message || 'Failed to create account. Please try again.');
+        const msg = signUpError.message || '';
+        if (msg.toLowerCase().includes('already registered') || msg.toLowerCase().includes('already been registered')) {
+            showError('This username is unavailable. Please choose a different one.');
+        } else {
+            showError(msg || 'Failed to create account. Please try again.');
+        }
         submitBtn.disabled = false;
         submitBtn.textContent = 'Create My Account';
         return;
