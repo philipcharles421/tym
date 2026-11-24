@@ -9,6 +9,12 @@ const toast = document.getElementById('toast');
 const userNameElement = document.getElementById('userName');
 const avatarImageElement = document.querySelector('.avatar-image');
 const avatarFileInput = document.getElementById('avatarFileInput');
+const avatarPickerModal = document.getElementById('avatarPickerModal');
+const avatarPickerOverlay = document.getElementById('avatarPickerOverlay');
+const avatarPickerClose = document.getElementById('avatarPickerClose');
+const avatarPickerPreviewImg = document.getElementById('avatarPickerPreviewImg');
+const avatarPresetGrid = document.getElementById('avatarPresetGrid');
+const avatarUploadTrigger = document.getElementById('avatarUploadTrigger');
 const avatarCropModal = document.getElementById('avatarCropModal');
 const avatarModalOverlay = document.getElementById('avatarModalOverlay');
 const avatarModalClose = document.getElementById('avatarModalClose');
@@ -32,6 +38,17 @@ const copyLinkInline = document.getElementById('copyLinkInline');
 
 let cropper = null;
 let currentUserProfile = null;
+
+const PRESET_AVATARS = [
+    { name: 'Ghost', url: './assets/avatars/ghost.svg' },
+    { name: 'Fox', url: './assets/avatars/fox.svg' },
+    { name: 'Cat', url: './assets/avatars/cat.svg' },
+    { name: 'Panda', url: './assets/avatars/panda.svg' },
+    { name: 'Robot', url: './assets/avatars/robot.svg' },
+    { name: 'Owl', url: './assets/avatars/owl.svg' },
+    { name: 'Bear', url: './assets/avatars/bear.svg' },
+    { name: 'Alien', url: './assets/avatars/alien.svg' }
+];
 
 function getUserLink(username) {
     const origin = window.location.origin;
@@ -111,6 +128,12 @@ function setupEventListeners() {
     changePasswordBtn?.addEventListener('click', handleChangePassword);
     logoutBtn?.addEventListener('click', handleLogout);
     avatarFileInput?.addEventListener('change', handleAvatarFileSelect);
+    avatarPickerOverlay?.addEventListener('click', closeAvatarPickerModal);
+    avatarPickerClose?.addEventListener('click', closeAvatarPickerModal);
+    avatarUploadTrigger?.addEventListener('click', () => {
+        closeAvatarPickerModal();
+        avatarFileInput?.click();
+    });
     avatarModalOverlay?.addEventListener('click', closeAvatarModal);
     avatarModalClose?.addEventListener('click', closeAvatarModal);
     avatarCancelBtn?.addEventListener('click', closeAvatarModal);
@@ -152,7 +175,75 @@ function closeProfileDropdown() {
 
 function handleChangeAvatar() {
     closeProfileDropdown();
-    avatarFileInput?.click();
+    openAvatarPickerModal();
+}
+
+function renderAvatarPresets() {
+    if (!avatarPresetGrid) return;
+    avatarPresetGrid.innerHTML = '';
+
+    PRESET_AVATARS.forEach((preset) => {
+        const item = document.createElement('button');
+        item.type = 'button';
+        item.className = 'avatar-preset-item';
+        item.setAttribute('aria-label', `Use ${preset.name} avatar`);
+        if (currentUserProfile?.avatar_url === preset.url) {
+            item.classList.add('selected');
+        }
+
+        const img = document.createElement('img');
+        img.src = preset.url;
+        img.alt = preset.name;
+        item.appendChild(img);
+
+        item.addEventListener('click', () => selectPresetAvatar(preset.url));
+        avatarPresetGrid.appendChild(item);
+    });
+}
+
+function openAvatarPickerModal() {
+    if (!avatarPickerModal) return;
+    if (avatarPickerPreviewImg) {
+        avatarPickerPreviewImg.src = currentUserProfile?.avatar_url || getDefaultAvatarUrl();
+    }
+    renderAvatarPresets();
+    avatarPickerModal.classList.remove('hidden');
+    avatarPickerModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeAvatarPickerModal() {
+    if (!avatarPickerModal) return;
+    avatarPickerModal.classList.add('hidden');
+    avatarPickerModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+async function selectPresetAvatar(presetUrl) {
+    if (!currentUserProfile?.id) {
+        showToast('User profile not found', 'error');
+        return;
+    }
+
+    if (currentUserProfile.avatar_url === presetUrl) {
+        closeAvatarPickerModal();
+        return;
+    }
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({ avatar_url: presetUrl })
+        .eq('id', currentUserProfile.id);
+
+    if (error) {
+        showToast(`Failed to update avatar: ${error.message}`, 'error');
+        return;
+    }
+
+    currentUserProfile.avatar_url = presetUrl;
+    setAvatarImage(presetUrl);
+    showToast('Avatar updated successfully');
+    closeAvatarPickerModal();
 }
 
 function handleAvatarFileSelect(event) {

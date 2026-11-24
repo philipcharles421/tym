@@ -1106,6 +1106,117 @@ body {
 }
 
 /* ================================
+   AVATAR PICKER MODAL STYLES
+   ================================ */
+
+.avatar-picker-panel {
+    max-width: 440px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.avatar-picker-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.avatar-picker-preview-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+}
+
+.avatar-picker-label {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 14px;
+}
+
+.avatar-preset-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.avatar-preset-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.avatar-preset-item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+}
+
+.avatar-preset-item:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.avatar-preset-item.selected {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+}
+
+.avatar-picker-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    margin: 18px 0;
+}
+
+.avatar-picker-divider::before,
+.avatar-picker-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.avatar-picker-divider span {
+    padding: 0 12px;
+}
+
+.avatar-btn-upload {
+    width: 100%;
+    background: rgba(102, 126, 234, 0.08);
+    color: #fff;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.avatar-btn-upload:hover {
+    background: rgba(102, 126, 234, 0.16);
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+@media (max-width: 480px) {
+    .avatar-preset-grid {
+        gap: 10px;
+    }
+}
+
+/* ================================
    CHANGE PASSWORD MODAL STYLES
    ================================ */
 

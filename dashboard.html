@@ -156,6 +156,32 @@
     <!-- Hidden File Input -->
     <input type="file" id="avatarFileInput" accept="image/png, image/jpeg" style="display: none;">
 
+    <!-- Avatar Picker Modal -->
+    <div id="avatarPickerModal" class="avatar-modal hidden" aria-hidden="true">
+        <div class="avatar-modal-overlay" id="avatarPickerOverlay"></div>
+        <div class="avatar-modal-panel avatar-picker-panel">
+            <div class="avatar-modal-header">
+                <h2 class="avatar-modal-title">Choose Your Avatar</h2>
+                <button class="avatar-modal-close" id="avatarPickerClose" aria-label="Close modal">✕</button>
+            </div>
+
+            <div class="avatar-modal-body">
+                <div class="avatar-picker-preview">
+                    <img id="avatarPickerPreviewImg" src="./assets/default-avatar.svg" alt="Current avatar preview" class="avatar-picker-preview-img">
+                </div>
+
+                <p class="avatar-picker-label">Pick a preset avatar</p>
+                <div class="avatar-preset-grid" id="avatarPresetGrid"></div>
+
+                <div class="avatar-picker-divider"><span>or</span></div>
+
+                <button type="button" class="avatar-btn avatar-btn-upload" id="avatarUploadTrigger">
+                    <span aria-hidden="true">🖼️</span> Upload from Gallery
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Avatar Crop Modal -->
     <div id="avatarCropModal" class="avatar-modal hidden" aria-hidden="true">
         <div class="avatar-modal-overlay" id="avatarModalOverlay"></div>

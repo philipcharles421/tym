@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tym-v8';
+const CACHE_NAME = 'tym-v9';
 const PRECACHE_URLS = [
     './landing.html',
     './login.html',
@@ -20,7 +20,15 @@ const PRECACHE_URLS = [
     './login.js',
     './landing.js',
     './assets/tym-logo.png',
-    './assets/default-avatar.svg'
+    './assets/default-avatar.svg',
+    './assets/avatars/ghost.svg',
+    './assets/avatars/fox.svg',
+    './assets/avatars/cat.svg',
+    './assets/avatars/panda.svg',
+    './assets/avatars/robot.svg',
+    './assets/avatars/owl.svg',
+    './assets/avatars/bear.svg',
+    './assets/avatars/alien.svg'
 ];
 
 self.addEventListener('install', (event) => {
