@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tym-v9';
+const CACHE_NAME = 'tym-v11';
 const PRECACHE_URLS = [
     './landing.html',
     './login.html',
@@ -20,6 +20,11 @@ const PRECACHE_URLS = [
     './login.js',
     './landing.js',
     './assets/tym-logo.png',
+    './assets/icon-512.png',
+    './assets/icon-192.png',
+    './assets/apple-touch-icon.png',
+    './assets/favicon-32.png',
+    './assets/favicon-16.png',
     './assets/default-avatar.svg',
     './assets/avatars/ghost.svg',
     './assets/avatars/fox.svg',
@@ -63,12 +68,19 @@ self.addEventListener('push', (event) => {
     const title = data.title || 'TYM – New Message';
     const options = {
         body: data.body || 'You received a new anonymous message!',
-        icon: './assets/tym-logo.png',
-        badge: './assets/tym-logo.png',
+        icon: './assets/icon-192.png',
+        badge: './assets/icon-192.png',
         tag: 'tym-new-message',
         renotify: true
     };
-    event.waitUntil(self.registration.showNotification(title, options));
+
+    const tasks = [self.registration.showNotification(title, options)];
+
+    if ('setAppBadge' in navigator && typeof data.badgeCount === 'number') {
+        tasks.push(navigator.setAppBadge(data.badgeCount).catch(() => {}));
+    }
+
+    event.waitUntil(Promise.all(tasks));
 });
 
 self.addEventListener('notificationclick', (event) => {

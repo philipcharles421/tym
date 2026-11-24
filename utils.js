@@ -241,6 +241,58 @@ export function saveUserAvatar(userId, base64String) {
     storage.setItem(getAvatarKey(userId), String(base64String || ''));
 }
 
+const VAPID_PUBLIC_KEY = 'BFGmlXtaUo6PwKhOKQTVLNg3xD2w4CoQikWbBDEec4ihLiwkJJKjIEj2EFL7CSOxThkxKwe2i6pZwzmNVUdT-X8';
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = atob(base64);
+    return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
+}
+
+export async function subscribeToPush(userId) {
+    if (!userId) return;
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+
+    try {
+        const registration = await navigator.serviceWorker.ready;
+        let subscription = await registration.pushManager.getSubscription();
+
+        if (!subscription) {
+            subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+            });
+        }
+
+        const subJson = subscription.toJSON();
+        if (!subJson?.endpoint || !subJson?.keys) return;
+
+        await supabase.from('push_subscriptions').upsert({
+            user_id: userId,
+            endpoint: subJson.endpoint,
+            p256dh: subJson.keys.p256dh,
+            auth: subJson.keys.auth
+        }, { onConflict: 'endpoint' });
+    } catch {
+        // Push subscription unavailable/denied in this browser - safe to ignore
+    }
+}
+
+export function updateAppBadge(count) {
+    if (!('setAppBadge' in navigator)) return;
+    try {
+        if (count > 0) {
+            navigator.setAppBadge(count).catch(() => {});
+        } else if ('clearAppBadge' in navigator) {
+            navigator.clearAppBadge().catch(() => {});
+        }
+    } catch {
+        // Badge API unsupported/unavailable in this context
+    }
+}
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});

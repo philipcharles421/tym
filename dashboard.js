@@ -1,4 +1,4 @@
-import { supabase } from './utils.js';
+import { supabase, updateAppBadge, subscribeToPush } from './utils.js';
 
 const profileTrigger = document.getElementById('profileTrigger');
 const profileDropdown = document.getElementById('profileDropdown');
@@ -38,6 +38,7 @@ const copyLinkInline = document.getElementById('copyLinkInline');
 
 let cropper = null;
 let currentUserProfile = null;
+let dashboardMessagesChannel = null;
 
 const PRESET_AVATARS = [
     { name: 'Ghost', url: './assets/avatars/ghost.svg' },
@@ -109,6 +110,58 @@ async function initializeDashboard() {
     }
 
     setupEventListeners();
+    await refreshUnreadBadge();
+    setupMessagesBadgeSubscription(profile.id);
+    setupPushNotifications(profile.id);
+}
+
+function setupPushNotifications(userId) {
+    if (!('Notification' in window)) return;
+
+    if (Notification.permission === 'default') {
+        setTimeout(async () => {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                subscribeToPush(userId);
+            }
+        }, 4000);
+    } else if (Notification.permission === 'granted') {
+        subscribeToPush(userId);
+    }
+}
+
+async function refreshUnreadBadge() {
+    if (!currentUserProfile?.id) return;
+
+    const { count, error } = await supabase
+        .from('messages')
+        .select('id', { count: 'exact', head: true })
+        .eq('recipient_id', currentUserProfile.id)
+        .eq('read', false);
+
+    if (!error) updateAppBadge(count || 0);
+}
+
+function setupMessagesBadgeSubscription(recipientId) {
+    dashboardMessagesChannel = supabase
+        .channel(`dashboard-badge-${recipientId}`)
+        .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'messages',
+            filter: `recipient_id=eq.${recipientId}`
+        }, () => {
+            refreshUnreadBadge();
+        })
+        .subscribe();
+}
+
+async function cleanupMessagesBadgeSubscription() {
+    if (!dashboardMessagesChannel) return;
+    try {
+        await supabase.removeChannel(dashboardMessagesChannel);
+    } catch (_) {}
+    dashboardMessagesChannel = null;
 }
 
 function setAvatarImage(url) {
@@ -490,6 +543,8 @@ async function handlePasswordSubmit(event) {
 }
 
 async function handleLogout() {
+    updateAppBadge(0);
+    await cleanupMessagesBadgeSubscription();
     await supabase.auth.signOut();
     window.location.href = './landing.html';
 }
@@ -541,3 +596,6 @@ window.shareOn = shareOn;
 window.copyLinkToClipboard = copyLinkToClipboard;
 
 window.addEventListener('load', initializeDashboard);
+window.addEventListener('beforeunload', () => {
+    cleanupMessagesBadgeSubscription();
+});

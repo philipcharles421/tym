@@ -1,4 +1,4 @@
-import { supabase } from './utils.js';
+import { supabase, updateAppBadge, subscribeToPush } from './utils.js';
 
 let currentUserSession = null;
 let currentUserProfile = null;
@@ -101,11 +101,17 @@ async function initializeInbox() {
 
 async function setupNotifications() {
     if (!('Notification' in window)) return;
+
     if (Notification.permission === 'default') {
         // Ask after a short delay so it doesn't feel intrusive on first load
         setTimeout(async () => {
-            await Notification.requestPermission();
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted' && currentUserSession?.user?.id) {
+                subscribeToPush(currentUserSession.user.id);
+            }
         }, 4000);
+    } else if (Notification.permission === 'granted' && currentUserSession?.user?.id) {
+        subscribeToPush(currentUserSession.user.id);
     }
 }
 
@@ -114,7 +120,7 @@ function sendBrowserNotification(message) {
     if (document.visibilityState === 'visible') return; // in-app toast is enough when tab is active
     new Notification('TYM – New Anonymous Message', {
         body: message.content ? `"${message.content.slice(0, 60)}${message.content.length > 60 ? '…' : ''}"` : 'You received a new anonymous message!',
-        icon: './assets/tym-logo.png'
+        icon: './assets/icon-192.png'
     });
 }
 
@@ -143,6 +149,7 @@ function setupMessagesRealtimeSubscription() {
             animateNewestMessageCard();
             showToast('New anonymous message received!');
             sendBrowserNotification(incomingMessage);
+            markMessageReadSilently(incomingMessage.id);
         })
         .subscribe();
 }
@@ -178,6 +185,32 @@ async function loadMessages() {
 
     messages = fetchedMessages || [];
     renderMessages();
+    await markAllVisibleAsRead();
+}
+
+async function markAllVisibleAsRead() {
+    const unreadIds = messages.filter((m) => !m.read).map((m) => m.id);
+
+    if (unreadIds.length === 0) {
+        updateAppBadge(0);
+        return;
+    }
+
+    const { error } = await supabase
+        .from('messages')
+        .update({ read: true })
+        .in('id', unreadIds);
+
+    if (!error) {
+        messages = messages.map((m) => (unreadIds.includes(m.id) ? { ...m, read: true } : m));
+    }
+
+    updateAppBadge(0);
+}
+
+async function markMessageReadSilently(id) {
+    await supabase.from('messages').update({ read: true }).eq('id', id);
+    updateAppBadge(0);
 }
 
 function renderSkeleton() {
